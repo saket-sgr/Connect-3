@@ -2,11 +2,13 @@ package com.sstna.connect3;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +16,9 @@ public class MainActivity extends AppCompatActivity {
     int redScore = 0;
 
     //0 = yellow, 1 = red
-    int activePlayer = 0;
+
+    int startPlayer=0;
+    int activePlayer = startPlayer;
 
     boolean gameIsActive = true;
 
@@ -82,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
     public void playAgain(View view) {
         LinearLayout layout = (LinearLayout)findViewById(R.id.playAgainLayout);
         layout.setVisibility(View.INVISIBLE);
-        activePlayer = 0;
+        if(startPlayer==0)
+            startPlayer=1;
+        else
+            startPlayer=0;
+        activePlayer = startPlayer;
         gameIsActive = true;
         for(int i = 0; i<gameState.length; i++) {
             gameState[i] = 2;
@@ -91,11 +99,18 @@ public class MainActivity extends AppCompatActivity {
         for(int i =0; i<gridLayout.getChildCount(); i++) {
             ((ImageView) gridLayout.getChildAt(i)).setImageResource(0);
         }
+        String str="Red";
+        if(startPlayer==0)
+            str="Yellow";
+        Toast toast = Toast.makeText(this,str + " Starts!!", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
 
     public void restart(View view) {
         yellowScore = 0;
         redScore = 0;
+        startPlayer=1;
         TextView yScore = (TextView)findViewById(R.id.ylwScore);
         TextView rScore = (TextView)findViewById(R.id.rdScore);
         yScore.setText("0");
@@ -107,5 +122,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast toast = Toast.makeText(this,"Yellow Starts!!", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
 }
